@@ -19,3 +19,9 @@ anvil_trigger:
 anvil_misc:
   chip: 0
   line: 143
+orin_devkit_pin18:  # gpio-391 (PH.00)
+  chip: 0
+  line: 43
+orin_devkit_pin32:  # gpio-324 (PBB.00)
+  chip: 1
+  line: 8

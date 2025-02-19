@@ -1,7 +1,7 @@
 <launch>
-  <arg name="frame_id" default="camera0"/>
+  <arg name="frame_id" default="camera/front_center"/>
   <arg name="namespace" default="$(var frame_id)"/>
-  <arg name="gpio_name" default="anvil_misc"/>
+  <arg name="gpio_name" default="orin_devkit_pin18"/>
   <arg name="phase" default="0.0"/>
   <arg name="frame_rate" default="10.0"/>
   <arg name="cpu_core_id" default="11"/>
