@@ -1,0 +1,22 @@
+<launch>
+  <arg name="namespace_1"  default="front_center"/>
+  <arg name="namespace_2"  default="front_right"/>
+  <arg name="gpio_pin_1"   default="18"/>
+  <arg name="gpio_pin_2"   default="32"/>
+  <arg name="phase_1"      default="0"/>
+  <arg name="phase_2"      default="60"/>
+  <arg name="frame_rate"   default="10"/>
+
+  <node pkg="jetson_camera_trigger" type="jetson_camera_trigger" name="jetson_camera_trigger" ns="camera/$(arg namespace_1)">
+    <param name="gpio" value="$(arg gpio_pin_1)"/>
+    <param name="phase" value="$(arg phase_1)"/>
+    <param name="frame_rate" value="$(arg frame_rate)"/>
+  </node>
+
+  <node pkg="jetson_camera_trigger" type="jetson_camera_trigger" name="jetson_camera_trigger" ns="camera/$(arg namespace_2)">
+    <param name="gpio" value="$(arg gpio_pin_2)"/>
+    <param name="phase" value="$(arg phase_2)"/>
+    <param name="frame_rate" value="$(arg frame_rate)"/>
+  </node>
+
+</launch>

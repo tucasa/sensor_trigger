@@ -18,6 +18,7 @@
 #define __JETSON_GPIO_H
 
 #include <map>
+#include <string>
 
 #define SYSFS_GPIO_DIR "/sys/class/gpio"
 #define BUFFER_SIZE 64
@@ -29,13 +30,16 @@
 typedef int gpio_direction;
 typedef int gpio_state;
 
-// Mapping of GPIO number to pin number for ROSCubeX
-static std::map<int, int> pin_gpio_mapping{ { 51, 408 }, { 52, 350 }, { 53, 446 }, { 54, 445 } };
+// Mapping of GPIO number to pin number for Orin Devkit
+// Pin  N: <first, second>
+// Pin 18: <391, PH.00>
+// Pin 32: <324, PBB.00>
+static std::map<int, std::pair<int, std::string>> pin_gpio_mapping{{18, {391, "PH.00"}}, {32, {324, "PBB.00"}}};
 
 int export_gpio(int gpio);
 int unexport_gpio(int gpio);
-int set_gpio_direction(int gpio, gpio_direction direction);
-int set_gpio_state(int gpio, gpio_state state);
+int set_gpio_direction(std::string gpio, gpio_direction direction);
+int set_gpio_state(std::string gpio, gpio_state state);
 
 int export_gpio_pin(int gpio_pin);
 int unexport_gpio_pin(int gpio_pin);
