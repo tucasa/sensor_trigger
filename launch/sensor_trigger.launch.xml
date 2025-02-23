@@ -1,14 +1,11 @@
 <launch>
-  <arg name="frame_id" default="camera/front_center"/>
-  <arg name="namespace" default="$(var frame_id)"/>
   <arg name="gpio_name" default="orin_devkit_pin18"/>
   <arg name="phase" default="0.0"/>
   <arg name="frame_rate" default="10.0"/>
-  <arg name="cpu_core_id" default="11"/>
+  <arg name="cpu_core_id" default="1"/>
   <arg name="pulse_width_ms" default="5"/>
   <arg name="gpio_mapping_file" default="$(find-pkg-share sensor_trigger)/config/gpio_mapping.yaml"/>
 
-  <push-ros-namespace namespace="$(var namespace)"/>
   <node pkg="sensor_trigger" exec="sensor_trigger_exe" name="sensor_trigger">
     <param name="gpio_name" value="$(var gpio_name)"/>
     <param name="phase" value="$(var phase)"/>
