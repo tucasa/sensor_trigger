@@ -20,6 +20,7 @@ pkg_check_modules(GPIOD REQUIRED libgpiodcxx)
 ament_auto_add_library(${PROJECT_NAME} SHARED
   src/sensor_trigger.cpp
   src/jetson_gpio.cpp
+  src/max9296_mfp0.cpp
 )
 
 target_link_libraries(${PROJECT_NAME}
