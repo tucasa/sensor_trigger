@@ -1,20 +1,42 @@
 <launch>
-  <arg name="frame_id" default="camera0"/>
-  <arg name="namespace" default="$(var frame_id)"/>
-  <arg name="gpio_name" default="anvil_misc"/>
-  <arg name="phase" default="0.0"/>
+  <arg name="namespace" default="sensor_trigger"/>
   <arg name="frame_rate" default="10.0"/>
-  <arg name="cpu_core_id" default="11"/>
   <arg name="pulse_width_ms" default="5"/>
-  <arg name="gpio_mapping_file" default="$(find-pkg-share sensor_trigger)/config/gpio_mapping.yaml"/>
 
-  <push-ros-namespace namespace="$(var namespace)"/>
-  <node pkg="sensor_trigger" exec="sensor_trigger_exe" name="sensor_trigger">
-    <param name="gpio_name" value="$(var gpio_name)"/>
-    <param name="phase" value="$(var phase)"/>
-    <param name="frame_rate" value="$(var frame_rate)"/>
-    <param name="cpu_core_id" value="$(var cpu_core_id)"/>
-    <param name="pulse_width_ms" value="$(var pulse_width_ms)"/>
-    <param name="gpio_mapping_file" value="$(var gpio_mapping_file)"/>
+  <arg name="dser0_phase" default="0.0"/>
+  <arg name="dser0_cpu_core_id" default="4"/>
+  <arg name="dser0_enabled" default="true"/>
+
+  <arg name="dser1_phase" default="0.0"/>
+  <arg name="dser1_cpu_core_id" default="5"/>
+  <arg name="dser1_enabled" default="true"/>
+
+  <arg name="dser2_phase" default="0.0"/>
+  <arg name="dser2_cpu_core_id" default="6"/>
+  <arg name="dser2_enabled" default="true"/>
+
+  <arg name="dser3_phase" default="0.0"/>
+  <arg name="dser3_cpu_core_id" default="7"/>
+  <arg name="dser3_enabled" default="true"/>
+
+  <node pkg="sensor_trigger" exec="sensor_trigger_exe" name="sensor_trigger" namespace="$(var namespace)">
+    <param name="frame_rate" value="$(var frame_rate)" type="float"/>
+    <param name="pulse_width_ms" value="$(var pulse_width_ms)" type="int"/>
+
+    <param name="dser0.phase" value="$(var dser0_phase)" type="float"/>
+    <param name="dser0.cpu_core_id" value="$(var dser0_cpu_core_id)" type="int"/>
+    <param name="dser0.enabled" value="$(var dser0_enabled)" type="bool"/>
+
+    <param name="dser1.phase" value="$(var dser1_phase)" type="float"/>
+    <param name="dser1.cpu_core_id" value="$(var dser1_cpu_core_id)" type="int"/>
+    <param name="dser1.enabled" value="$(var dser1_enabled)" type="bool"/>
+
+    <param name="dser2.phase" value="$(var dser2_phase)" type="float"/>
+    <param name="dser2.cpu_core_id" value="$(var dser2_cpu_core_id)" type="int"/>
+    <param name="dser2.enabled" value="$(var dser2_enabled)" type="bool"/>
+
+    <param name="dser3.phase" value="$(var dser3_phase)" type="float"/>
+    <param name="dser3.cpu_core_id" value="$(var dser3_cpu_core_id)" type="int"/>
+    <param name="dser3.enabled" value="$(var dser3_enabled)" type="bool"/>
   </node>
 </launch>

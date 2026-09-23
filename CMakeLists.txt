@@ -14,20 +14,9 @@ endif()
 find_package(ament_cmake_auto REQUIRED)
 ament_auto_find_build_dependencies()
 
-find_package(PkgConfig)
-pkg_check_modules(GPIOD REQUIRED libgpiodcxx)
-
 ament_auto_add_library(${PROJECT_NAME} SHARED
   src/sensor_trigger.cpp
-  src/jetson_gpio.cpp
   src/max9296_mfp0.cpp
-)
-
-target_link_libraries(${PROJECT_NAME}
-  ${GPIOD_LIBRARIES}
-)
-target_link_libraries(${PROJECT_NAME}
-  yaml-cpp
 )
 
 rclcpp_components_register_node(${PROJECT_NAME}
@@ -45,5 +34,4 @@ endif()
 ament_auto_package(
   INSTALL_TO_SHARE
     launch
-    config
 )

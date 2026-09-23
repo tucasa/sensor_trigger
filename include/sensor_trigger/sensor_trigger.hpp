@@ -15,16 +15,16 @@
 #ifndef SENSOR_TRIGGER__SENSOR_TRIGGER_HPP_
 #define SENSOR_TRIGGER__SENSOR_TRIGGER_HPP_
 
+#include <sensor_trigger/max9296_mfp0.hpp>
+
 #include <builtin_interfaces/msg/time.hpp>
 #include <rclcpp/rclcpp.hpp>
 
 #include <pthread.h>
-#include <yaml-cpp/yaml.h>
 
-#include <memory>
-#include <mutex>
-#include <string>
-#include <vector>
+#include <array>
+#include <atomic>
+#include <thread>
 
 namespace sensor_trigger
 {
@@ -35,29 +35,41 @@ public:
   ~SensorTrigger();
 
 private:
-  // ros::NodeHandle nh_{ "" };
-  // ros::NodeHandle private_nh_{ "~" };
-  rclcpp::Publisher<builtin_interfaces::msg::Time>::SharedPtr trigger_time_publisher_;
+  struct Mapping
+  {
+    int bus;
+    int camera_a;
+    int camera_b;
+  };
 
-  // Map from gpio name to chip number and line number
-  YAML::Node gpio_mapping_;
-  bool get_gpio_chip_and_line();
+  struct Channel
+  {
+    int bus{0};
+    int camera_a{0};
+    int camera_b{0};
+    double phase{0.0};
+    int cpu{1};
+    bool enabled{false};
+    Max9296Mfp0 output;
+    rclcpp::Publisher<builtin_interfaces::msg::Time>::SharedPtr trigger_time_publisher;
+    std::thread trigger_thread;
+  };
 
-  // Triggering configuration
-  double fps_;
-  double phase_;
-  std::string gpio_name_;
-  unsigned int gpio_chip_;
-  unsigned int gpio_line_;
-  int cpu_;
-  std::mutex iomutex_;
-  int64_t pulse_width_ms_;
-  jetson_gpio::JetsonGpio gpio_handler_;
+  // Cameras 0..7 are fixed to these MAX9296 MFP0 inputs. Two cameras share one pin.
+  static constexpr int kDeserializerCount = 4;
+  static constexpr Mapping kMapping[kDeserializerCount] = {
+    {30, 0, 1},
+    {31, 2, 3},
+    {32, 4, 5},
+    {33, 6, 7},
+  };
 
-  // Trigger thread
-  std::unique_ptr<std::thread> trigger_thread_;
+  double fps_{10.0};
+  int64_t pulse_width_ms_{5};
+  std::atomic<bool> running_{true};
+  std::array<Channel, kDeserializerCount> channels_;
 
-  void run();
+  void run(int index);
 };
 }  // namespace sensor_trigger
 
